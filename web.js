@@ -1,14 +1,12 @@
 var sys = require("sys"),
-my_http = require("http");
+http = require("http");
 var fs  = require("fs");
 var buffer = new Buffer(20);
-my_http.createServer(function(request,response){
-	sys.puts("I got kicked");
+http.createServer(function(request,response){
 	response.writeHeader(200, {"Content-Type": "text/plain"});
-	fs.readFileSync('./index.html', "utf8").toString;
+	response.write(fs.readFileSync('./index.html', "utf8").toString);
 	response.end();
-}).listen(8080);
-sys.puts("Server Running on 8080");	
+})
 
 
 
