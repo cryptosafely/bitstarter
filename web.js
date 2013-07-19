@@ -1,12 +1,19 @@
-
-var http = require('http');
-var fs  = require('fs');
-var buffer = new Buffer(20);
-http.createServer(function(request,response){
-	response.writeHeader(200, {"Content-Type": "text/plain"});
-	response.end = fs.readFileSync('./index.html', "utf8");
-}).listen(process.env.PORT);
-
+var fs = require("fs");
+var fileName = "index.html";
+fs.exists(fileName, function(exists) {
+  if (exists) {
+    fs.stat(fileName, function(error, stats) {
+      fs.open(fileName, "r", function(error, fd) {
+        var buffer = new Buffer(stats.size);
+        fs.read(fd, buffer, 0, buffer.length, null, function(error, bytesRead, buffer) {
+          var data = buffer.toString("utf8", 0, buffer.length);
+          console.log(data);
+          fs.close(fd);
+        });
+      });
+    });
+  }
+});
 
 
 
